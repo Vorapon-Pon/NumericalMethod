@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select"; 
 import Plot from 'react-plotly.js';
 import { evaluate } from 'mathjs';
 import ErrorGraph from '@/components/ErrorGraph';
 import Answer from '@/components/Answer';
+import axios from 'axios';
 import 'katex/dist/katex.min.css';
 
 const BisectionMethod = () => {
@@ -14,7 +16,35 @@ const BisectionMethod = () => {
   const [xR, setXR] = useState('');
   const [tolerance, setTolerance] = useState('0.000001');
   const [precision, setPrecision] = useState('6');
+  const [examples, setExamples] = useState([]); // To store the list of examples
+  const [selectedExample, setSelectedExample] = useState(''); // To store the selected example
   const [result, setResult] = useState(null);
+  const [method, setMethod] = useState('bisection');
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/${method}`);
+        setExamples(response.data);
+      } catch (error) {
+        console.error('Error fetching examples:', error);
+      }
+    };
+
+    fetchData();
+  }, [method]); 
+
+  const handleSelectExample = (value) => {
+    const selected = examples[value];
+    if (selected) {
+      setEquation(selected.equation);
+      setXL(selected.xL);
+      setXR(selected.xR);
+      setTolerance(selected.tolerance);
+      setPrecision(selected.precision);
+      setSelectedExample(value);
+    }
+  };
 
   const handleSolve = () => {
     let xl = parseFloat(xL);
@@ -22,13 +52,13 @@ const BisectionMethod = () => {
     const tol = parseFloat(tolerance);
     const iterations = [];
     let xm, fxm, error;
-    let xmold = 0
+    let xmold = 0;
 
     do {
       xm = (xl + xr) / 2;
       fxm = evaluate(equation, { x: xm });
       const fxl = evaluate(equation, { x: xl });
-      error = Math.abs((xm - xmold)/xm);
+      error = Math.abs((xm - xmold) / xm);
       iterations.push({ xl, xr, xm, fxm, error });
       xmold = xm;
 
@@ -92,11 +122,28 @@ const BisectionMethod = () => {
           onChange={(e) => setPrecision(e.target.value)}
         />
       </div>
+
+      {/* Dropdown to choose an example */}
+      <div className="mb-4">
+        <Label htmlFor="example">Choose an Example</Label>
+        <Select value={selectedExample} onValueChange={handleSelectExample}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select an example" />
+          </SelectTrigger>
+          <SelectContent>
+            {examples.map((example, index) => (
+              <SelectItem key={index} value={index.toString()}>
+                {`Equation ${index + 1}: ${example.equation}`}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <Button onClick={handleSolve} className="bg-neutral-900 hover:bg-neutral-800">Solve</Button>
 
       {result && (
         <div className="mt-8">
-          
           <Answer equation={equation} root={result.root} precision={precision} />
 
           <ErrorGraph data={result.iterations} />
@@ -104,7 +151,7 @@ const BisectionMethod = () => {
           <Plot
             data={[
               {
-                x: result.iterations.map((_,index) => index),
+                x: result.iterations.map((_, index) => index),
                 y: result.iterations.map(iter => iter.xm),
                 type: 'scatter',
                 mode: 'lines+markers',
@@ -116,11 +163,11 @@ const BisectionMethod = () => {
               title: 'Graph',
               xaxis: { title: 'xm' },
               yaxis: { title: 'f(xm)' },
-              dragmode: 'pan', 
-              hovermode: 'closest', 
+              dragmode: 'pan',
+              hovermode: 'closest',
             }}
             config={{
-              displayModeBar: true, 
+              displayModeBar: true,
               scrollZoom: true,
             }}
           />

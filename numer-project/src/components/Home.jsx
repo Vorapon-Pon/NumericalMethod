@@ -20,26 +20,28 @@ const HomePage = () => {
   return (
     <>
     <Navbar/>
-    <div id="home" className="container mx-auto my-8 py-16 px-16">
+    <div id="home" className="container mx-auto my-8 py-16 px-4 md:px-16">
       <h1 className="text-md text-left text-neutral-400">6 6 0 4 0 6 2 6 3 0 5 0 1</h1>
-      <h1 className="font-bold text-6xl text-left text-white mb-3">Numerical Methods</h1>
-      <p className="indent-10 text-neutral-300 my-16 px-16">Today, computers and numerical methods provide an alternative for such complicated calculations. Using computer power to obtain solutions directly, you can approach
-
-these calculations without recourse to simplifying assumptions or time-intensive tech-
-niques. Although analytical solutions are still extremely valuable both for problem solving and for providing insight, numerical methods represent alternatives that greatly enlarge your capabilities to confront and solve problems. As a result, more time is
-available for the use of your creative skills. Thus, more emphasis can be placed on
-problem formulation and solution interpretation and the incorporation of total system,
-or “holistic,” awareness</p>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-32">
+      <h1 className="font-bold text-5xl md:text-6xl text-left text-white mb-3">Numerical Methods</h1>
+      <p className="text-neutral-300 my-8 md:my-16 px-4 md:px-16 leading-relaxed">
+        Today, computers and numerical methods provide an alternative for such complicated calculations. 
+        Using computer power to obtain solutions directly, you can approach these calculations without 
+        recourse to simplifying assumptions or time-intensive techniques. 
+        Although analytical solutions are still extremely valuable both for problem solving and for providing insight, 
+        numerical methods represent alternatives that greatly enlarge your capabilities to confront and solve problems. 
+        As a result, more time is available for the use of your creative skills. Thus, more emphasis can be placed on problem formulation 
+        and solution interpretation and the incorporation of total system, or “holistic,” awareness.
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 md:px-16">
         {topics.map((topic) => (
-          <Card key={topic.title} className="bg-neutral-950 shadow-md hover:shadow-neutral-800 border-transparent">
+          <Card key={topic.title} className="bg-black border border-neutral-800 shadow-lg hover:shadow-neutral-700 transition-all duration-300">
           <CardHeader>
-            <CardTitle className="text-white">{topic.title}</CardTitle>
-            <CardDescription className="text-gray-300">{topic.desc}</CardDescription>
+            <CardTitle className="text-white text-xl">{topic.title}</CardTitle>
+            <CardDescription className="text-gray-400">{topic.desc}</CardDescription>
           </CardHeader>
           <CardContent>
             <Link to={topic.path}>
-              <Button className="w-full text-white bg-neutral-900 hover:bg-neutral-800 ">Explore Methods</Button>
+              <Button className="w-full text-white bg-neutral-800 hover:bg-neutral-700 transition-colors duration-300">Explore Methods</Button>
             </Link>
           </CardContent>
         </Card>

@@ -50,29 +50,29 @@ const methodComponents = {
 
 const SolutionPage = () => {
   const { topicId, methodId } = useParams();
-
-  // Get the corresponding method component based on methodId
   const MethodComponent = methodComponents[methodId] || (() => <div>Method not found</div>);
 
   return (
     <>
       <Navbar />
-      <div className="container mx-auto my-8 py-16 px-16">
-        <h1 className="text-3xl font-bold text-6xl text-center text-white mb-8">Solve using {methodId.replace(/([A-Z])/g, ' $1')} Method</h1>
-        <div className="mt-8">
+      <div className="container mx-auto my-8 py-16 px-4 md:px-16">
+        <h1 className="text-4xl md:text-5xl font-bold text-center text-white mb-12">
+          {methodId.replace(/([A-Z])/g, ' $1').trim()} Method
+        </h1>
+        <div className="bg-black border border-neutral-800 rounded-lg shadow-lg p-6 mb-8">
           <MethodComponent />
-            <div className="mt-8 text-center">
-            <Link to={`/${topicId}`}>
-                <Button className="mr-2 text-white bg-neutral-900 hover:bg-neutral-800 border-transparent">
-                    Back to Methods
-                </Button>
-            </Link>
-            <Link to="/">
-                <Button className="mr-2 text-white bg-neutral-900 hover:bg-neutral-800 border-transparent">
-                    Back to Home
-                </Button>
-            </Link>
-            </div>
+        </div>
+        <div className="mt-12 text-center space-x-4">
+          <Link to={`/${topicId}`}>
+            <Button className="text-white bg-neutral-800 hover:bg-neutral-700 transition-colors duration-300">
+              Back to Methods
+            </Button>
+          </Link>
+          <Link to="/">
+            <Button className="text-white bg-neutral-800 hover:bg-neutral-700 transition-colors duration-300">
+              Back to Home
+            </Button>
+          </Link>
         </div>
       </div>
     </>

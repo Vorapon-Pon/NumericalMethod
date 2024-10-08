@@ -5,64 +5,82 @@ import { Label } from "@/components/ui/label";
 import { evaluate } from 'mathjs';
 
 const GraphicalMethod = () => {
-  const [equation, setEquation] = useState('43x-180');
+  const [equation, setEquation] = useState('');
   const [xStart, setXStart] = useState(0);
   const [xEnd, setXEnd] = useState(5);
-  const [tolerance, setTolerance] = useState(0.000001);
+  const [tolerance, setTolerance] = useState(0.0001);
   const [result, setResult] = useState(null);
   const [precision, setPrecision] = useState(6);
-  const [isCalculating, setIsCalculating] = useState(false);
-  const [data, setData] = useState([]);
-  const [root, setRoot] = useState(null);
-
+  const [iterations, setIterations] = useState([]);
+  
   const f = (x) => evaluate(equation, { x });
 
-  const start = (xlnum, xrnum) => {
-    let left = 0, right = 0;
-    for (let i = xlnum; i < xrnum; i++) {
-      left = f(i);
-      right = f(i + 1);
-      if (left * right < 0) {
-        return i;
+  const calGraphical = (xl, xr, tol) => {
+    let stepSize = 1;
+    let iterCount = 0;
+    let newIterations = [];
+    let error = 1;  
+    let oldY = 0;
+    let y1, y2;
+    let l = xl; 
+    let r = xr; 
+  
+    while (error >= tol) {
+      for (let x = l; x <= r; x += stepSize) {
+        y1 = f(x);
+        y2 = f(x + stepSize);
+        iterCount++;
+  
+        newIterations.push({
+          Iteration: iterCount,
+          x: x,
+          f_x: y1
+        });
+  
+        if (y1 * y2 <= 0) {
+          l = x;
+          r = x + stepSize;
+  
+          stepSize /= 10;
+  
+          break;
+        }
+      }
+  
+      error = Math.abs(y1 - oldY);
+      oldY = y1;
+  
+      if (stepSize < tol) {
+        let root = findRoot(l, r, tol); 
+        setResult(root);
+        setIterations(newIterations);
+        return; 
       }
     }
-    return -1;
+  
+    setIterations(newIterations);
   };
+  
 
-  const calGraphical = (xlnum, xrnum) => {
-    let iter = 0;
-    const st = start(xlnum, xrnum);
-    if (st === -1) {
-      alert("No root found in the interval.");
-      return;
-    }
-
-    let newData = [];
-    let foundRoot = null;
-    for (let i = st; i < st + 1; i += tolerance) {
-      let result = f(i);
-      iter++;
-      newData.push({ Iteration: iter, x: i, y: result });
-      if (result > -tolerance * 10 && result < tolerance * 10) {
-        foundRoot = i;
-        break;  
+  const findRoot = (xl, xr, tol) => {
+    let xm;
+    while (Math.abs(xr - xl) > tol) {
+      xm = (xl + xr) / 2;
+      let fLeft = f(xl);
+      let fMid = f(xm);
+      if (fLeft * fMid <= 0) {
+        xr = xm;
+      } else {
+        xl = xm;
       }
     }
-    setData(newData);
-    setRoot(foundRoot);
-    setResult({
-      root: foundRoot,
-      points: newData,
-      iterations: newData
-    });
+    return (xl + xr) / 2;
   };
 
   const handleSolve = () => {
-    setIsCalculating(true);
-    const xlnum = parseFloat(xStart);
-    const xrnum = parseFloat(xEnd);
-    calGraphical(xlnum, xrnum);
-    setIsCalculating(false);
+    const xl = parseFloat(xStart);
+    const xr = parseFloat(xEnd);
+    calGraphical(xl, xr, tolerance);
   };
 
   return (
@@ -73,7 +91,7 @@ const GraphicalMethod = () => {
           id="equation"
           value={equation}
           onChange={(e) => setEquation(e.target.value)}
-          placeholder="e.g., 43 * x - 180"
+          placeholder="e.g., x^3 - 2*x - 5"
         />
       </div>
       <div className="mb-4">
@@ -112,15 +130,13 @@ const GraphicalMethod = () => {
           onChange={(e) => setPrecision(parseInt(e.target.value))}
         />
       </div>
-      <Button onClick={handleSolve} disabled={isCalculating}>
-        {isCalculating ? 'Calculating...' : 'Solve'}
-      </Button>
+      <Button onClick={handleSolve} className="bg-neutral-900 hover:bg-neutral-800">Solve</Button>
 
       {result && (
         <div className="mt-8">
           <h2 className="text-2xl font-semibold mb-4">Solution</h2>
           <p>Equation: f(x) = {equation}</p>
-          <p>Root: {root !== null ? root.toFixed(parseInt(precision)) : "No root found"}</p>
+          <p>Root: {result.toFixed(precision)}</p>
 
           <h3 className="text-xl font-semibold mt-6 mb-2">Iteration Table</h3>
           <table className="w-full border-collapse border border-gray-300">
@@ -132,23 +148,38 @@ const GraphicalMethod = () => {
               </tr>
             </thead>
             <tbody>
-              {result.iterations.slice(0, 10).map((iter, index) => (
-                <tr key={index}>
-                  <td className="border border-gray-300 p-2">{iter.Iteration}</td>
-                  <td className="border border-gray-300 p-2">{iter.x.toFixed(precision)}</td>
-                  <td className="border border-gray-300 p-2">{iter.y.toFixed(precision)}</td>
-                </tr>
-              ))}
-              <tr>
-                <td className="border border-gray-300 p-2" colSpan="3">...</td>
-              </tr>
-              {result.iterations.slice(-10).map((iter, index) => (
-                <tr key={index + result.iterations.length - 10}>
-                  <td className="border border-gray-300 p-2">{iter.Iteration}</td>
-                  <td className="border border-gray-300 p-2">{iter.x.toFixed(precision)}</td>
-                  <td className="border border-gray-300 p-2">{iter.y.toFixed(precision)}</td>
-                </tr>
-              ))}
+              {/* Show all iterations if less than or equal to 20 */}
+              {iterations.length <= 20 ? (
+                iterations.map((iter, index) => (
+                  <tr key={index}>
+                    <td className="border border-gray-300 p-2">{iter.Iteration}</td>
+                    <td className="border border-gray-300 p-2">{iter.x.toPrecision(precision)}</td>
+                    <td className="border border-gray-300 p-2">{iter.f_x.toPrecision(precision)}</td>
+                  </tr>
+                ))
+              ) : (
+                <>
+                  {/* Show first 10 iterations */}
+                  {iterations.slice(0, 10).map((iter, index) => (
+                    <tr key={index}>
+                      <td className="border border-gray-300 p-2">{iter.Iteration}</td>
+                      <td className="border border-gray-300 p-2">{iter.x.toPrecision(precision)}</td>
+                      <td className="border border-gray-300 p-2">{iter.f_x.toPrecision(precision)}</td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td className="border border-gray-300 p-2" colSpan="3">...</td>
+                  </tr>
+                  {/* Show last 10 iterations */}
+                  {iterations.slice(-10).map((iter, index) => (
+                    <tr key={index + iterations.length - 10}>
+                      <td className="border border-gray-300 p-2">{iter.Iteration}</td>
+                      <td className="border border-gray-300 p-2">{iter.x.toPrecision(precision)}</td>
+                      <td className="border border-gray-300 p-2">{iter.f_x.toPrecision(precision)}</td>
+                    </tr>
+                  ))}
+                </>
+              )}
             </tbody>
           </table>
         </div>

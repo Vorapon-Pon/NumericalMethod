@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select"; 
 import Plot from 'react-plotly.js';
-import ErrorGraph from '@/components/ErrorGraph';
 import { evaluate } from 'mathjs';
+import ErrorGraph from '@/components/ErrorGraph';
 import Answer from '@/components/Answer';
+import axios from 'axios';
+import 'katex/dist/katex.min.css';
 
 const FalsePositionMethod = () => {
   const [equation, setEquation] = useState('');
@@ -13,7 +16,36 @@ const FalsePositionMethod = () => {
   const [xR, setXR] = useState('');
   const [tolerance, setTolerance] = useState('0.000001');
   const [precision, setPrecision] = useState('6');
+  const [examples, setExamples] = useState([]); // To store the list of examples
+  const [selectedExample, setSelectedExample] = useState(''); // To store the selected example
   const [result, setResult] = useState(null);
+  const [method, setMethod] = useState('falseposition');
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/${method}`);
+        setExamples(response.data);
+      } catch (error) {
+        console.error('Error fetching examples:', error);
+      }
+    };
+
+    fetchData();
+  }, [method]);
+
+  const handleSelectExample = (value) => {
+    const selected = examples[value];
+    if (selected) {
+      setEquation(selected.equation);
+      setXL(selected.xL);
+      setXR(selected.xR);
+      setTolerance(selected.tolerance);
+      setPrecision(selected.precision);
+      setSelectedExample(value);
+    }
+  };
 
   const handleSolve = () => {
     let xl = parseFloat(xL);
@@ -92,6 +124,24 @@ const FalsePositionMethod = () => {
           onChange={(e) => setPrecision(e.target.value)}
         />
       </div>
+
+      {/* Dropdown to choose an example */}
+      <div className="mb-4">
+        <Label htmlFor="example">Choose an Example</Label>
+        <Select value={selectedExample} onValueChange={handleSelectExample}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select an example" />
+          </SelectTrigger>
+          <SelectContent>
+            {examples.map((example, index) => (
+              <SelectItem key={index} value={index.toString()}>
+                {`Equation ${index + 1}: ${example.equation}`}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <Button onClick={handleSolve}>Solve</Button>
 
       {result && (
@@ -107,7 +157,7 @@ const FalsePositionMethod = () => {
                 x: result.iterations.map(iter => iter.x),
                 y: result.iterations.map(iter => iter.fx),
                 type: 'scatter',
-                mode: 'lines',
+                mode: 'lines+markers',
                 marker: { color: '#007bff' },
                 name: 'f(x)',
               },

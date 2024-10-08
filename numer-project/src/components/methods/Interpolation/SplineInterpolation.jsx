@@ -25,7 +25,6 @@ const SplineInterpolation = () => {
     if (numberOfPoints > 1) {
       setPoints(points.slice(0, -1));
       setNumberOfPoints(numberOfPoints - 1);
-      //asdasdasdasdasdasdasdasdasdsadwasdwasdwa
     }
   };
 
@@ -33,16 +32,16 @@ const SplineInterpolation = () => {
     const updatedPoints = [...points];
     updatedPoints[index] = { ...updatedPoints[index], [field]: parseFloat(value) };
     setPoints(updatedPoints);
-    calculateLinearSlope();
   };
 
   const handleToggle = (type) => {
     setInterpolationType(type);   
   };
 
-  const getResults= () => {
-    if(interpolationType === 'linear') {
-      const n = points.length;
+  const getResults = () => {
+    const n = points.length;
+
+    if (interpolationType === 'linear') {
       for(let i = 0; i < n - 1; i++) {
         if (interpolateValueX >= points[i].x && interpolateValueX <= points[i + 1].x) {
           let result = points[i].fx + LinearSlope[i] * (interpolateValueX - points[i].x);
@@ -50,13 +49,12 @@ const SplineInterpolation = () => {
               \\ f(${interpolateValueX}) = ${result}`);
         }
       }
-      console.log(LinearSlope);
-    }else if(interpolationType === 'quadratic') {
-
-    }else if(interpolationType === 'cubic') {
-
+    } else if (interpolationType === 'quadratic') {
+      
+    } else if (interpolationType === 'cubic') {
+     
     }
-  }
+  };
 
   const calculateSplineInterpolation = () => {
     const n = points.length;
@@ -64,7 +62,9 @@ const SplineInterpolation = () => {
     if (n < 2) {
       alert('Please select at least 2 points.');
       return;
-    }else if (interpolationType === 'linear') {
+    }
+
+    if (interpolationType === 'linear') {
       let splineEq = '';
       let slope = [];
       for (let i = 0; i < n - 1; i++) {
@@ -76,15 +76,14 @@ const SplineInterpolation = () => {
         slope[i] = (y1 - y0) / (x1 - x0);
 
         splineEq += `\\ f_${i + 1}(x) = ${points[i].fx} + (${slope[i]})(x - ${points[i].x}) ; \\quad
-        ${points[i].x} \\leq x \\leq${points[i + 1].x} \\\\`
-        
-      } 
+        ${points[i].x} \\leq x \\leq${points[i + 1].x} \\\\`;
+      }
       setSplineEquation(splineEq);
       setSlope(slope);
     } else if (interpolationType === 'quadratic') {
-      // Handle Quadratic Interpolation calculation
+     
     } else if (interpolationType === 'cubic') {
-      // Handle Cubic Interpolation calculation
+     
     }
   };
 
