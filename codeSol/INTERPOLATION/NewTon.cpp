@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <iomanip> 
-using namespace std;
 
+using namespace std;
 
 double calculateCoefficient(const vector<pair<double, double>>& points, int i, int j) {
     if (i == j) {

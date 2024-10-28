@@ -60,16 +60,13 @@ const GaussJordanElimination = () => {
     // Initial Matrix
     steps.push(`\\text{Initial matrix:} ${formatMatrixWithColor(augMatrix)}`);
 
-    // Forward Elimination and Backward Elimination (Gauss-Jordan)
     for (let i = 0; i < n; i++) {
-      // Make the diagonal element 1
       const pivot = augMatrix[i][i];
       for (let j = 0; j <= n; j++) {
         augMatrix[i][j] /= pivot;
       }
       steps.push(`R_{${i + 1}} \\rightarrow \\frac{1}{${pivot.toFixed(2)}} R_{${i + 1}} : ${formatMatrixWithColor(augMatrix, { [i]: [i] })}`);
 
-      // Eliminate the other rows
       for (let k = 0; k < n; k++) {
         if (k !== i) {
           const factor = augMatrix[k][i];

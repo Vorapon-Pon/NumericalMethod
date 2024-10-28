@@ -1,18 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select"; 
 import { evaluate } from 'mathjs';
+import { BlockMath } from 'react-katex';
+import axios from 'axios';
+import 'katex/dist/katex.min.css';
 
 const GraphicalMethod = () => {
   const [equation, setEquation] = useState('');
   const [xStart, setXStart] = useState(0);
   const [xEnd, setXEnd] = useState(5);
   const [tolerance, setTolerance] = useState(0.0001);
-  const [result, setResult] = useState(null);
   const [precision, setPrecision] = useState(6);
+  const [examples, setExamples] = useState([]); // To store the list of examples
+  const [selectedExample, setSelectedExample] = useState(''); // To store the selected example
+  const [result, setResult] = useState(null);
+  const [method, setMethod] = useState('graphical');
   const [iterations, setIterations] = useState([]);
   
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/${method}`);
+        setExamples(response.data);
+      } catch (error) {
+        console.error('Error fetching examples:', error);
+      }
+    };
+
+    fetchData();
+  }, [method]); 
+
+  const handleSelectExample = (value) => {
+    const selected = examples[value];
+    if (selected) {
+      setEquation(selected.equation);
+      setXStart(selected.xL);
+      setXEnd(selected.xR);
+      setTolerance(selected.tolerance);
+      setPrecision(selected.precision);
+      setSelectedExample(value);
+    }
+  };
+
   const f = (x) => evaluate(equation, { x });
 
   const calGraphical = (xl, xr, tol) => {
@@ -130,15 +162,33 @@ const GraphicalMethod = () => {
           onChange={(e) => setPrecision(parseInt(e.target.value))}
         />
       </div>
+
+      {/* Dropdown to choose an example */}
+      <div className="mb-4">
+        <Label htmlFor="example">Choose an Example</Label>
+        <Select value={selectedExample} onValueChange={handleSelectExample}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select an example" />
+          </SelectTrigger>
+          <SelectContent>
+            {examples.map((example, index) => (
+              <SelectItem key={index} value={index.toString()}>
+                {`Equation ${index + 1}: ${example.equation}`}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <Button onClick={handleSolve} className="bg-neutral-900 hover:bg-neutral-800">Solve</Button>
 
       {result && (
         <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">Solution</h2>
-          <p>Equation: f(x) = {equation}</p>
-          <p>Root: {result.toFixed(precision)}</p>
+          <BlockMath math={`Equation: f(x) = ${equation}`} />
+          <BlockMath math={`Root = ${result.toFixed(parseInt(precision))}`} />
 
           <h3 className="text-xl font-semibold mt-6 mb-2">Iteration Table</h3>
+          <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-gray-300">
             <thead>
               <tr className="bg-gray-100">
@@ -182,6 +232,7 @@ const GraphicalMethod = () => {
               )}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </div>

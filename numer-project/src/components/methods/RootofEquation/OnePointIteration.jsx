@@ -1,18 +1,47 @@
-import React, { useState } from 'react'; 
+import React, { useState, useEffect  } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select"; 
 import Plot from 'react-plotly.js';
 import { evaluate } from 'mathjs';
 import ErrorGraph from '@/components/ErrorGraph';
 import Answer from '@/components/Answer';
+import axios from 'axios';
 
 const OnePointIterationMethod = () => {
   const [equation, setEquation] = useState('');
   const [initialX, setInitialX] = useState('');
   const [tolerance, setTolerance] = useState('0.000001');
   const [precision, setPrecision] = useState('6');
+  const [examples, setExamples] = useState([]); // To store the list of examples
+  const [selectedExample, setSelectedExample] = useState(''); // To store the selected example
   const [result, setResult] = useState(null);
+  const [method, setMethod] = useState('onepointiteration');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/${method}`);
+        setExamples(response.data);
+      } catch (error) {
+        console.error('Error fetching examples:', error);
+      }
+    };
+  
+    fetchData();
+  }, [method]);
+  
+  const handleSelectExample = (value) => {
+    const selected = examples[value];
+    if (selected) {
+      setEquation(selected.equation);
+      setInitialX(selected.initialX);
+      setTolerance(selected.tolerance);
+      setPrecision(selected.precision);
+      setSelectedExample(value);
+    }
+  };
 
   const handleSolve = () => {
     let x = parseFloat(initialX);
@@ -81,6 +110,24 @@ const OnePointIterationMethod = () => {
           onChange={(e) => setPrecision(e.target.value)}
         />
       </div>
+
+      {/* Dropdown to choose an example */}
+      <div className="mb-4">
+        <Label htmlFor="example">Choose an Example</Label>
+        <Select value={selectedExample} onValueChange={handleSelectExample}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select an example" />
+          </SelectTrigger>
+          <SelectContent>
+            {examples.map((example, index) => (
+              <SelectItem key={index} value={index.toString()}>
+                {`Equation ${index + 1}: ${example.equation}`}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <Button onClick={handleSolve} className="bg-neutral-900 hover:bg-neutral-800">Solve</Button>
 
       {result && (
@@ -111,6 +158,7 @@ const OnePointIterationMethod = () => {
           />
 
           <h3 className="text-xl font-semibold mt-6 mb-2">Iteration Table</h3>
+          <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-gray-300">
             <thead>
               <tr className="bg-gray-100">
@@ -131,6 +179,7 @@ const OnePointIterationMethod = () => {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </div>

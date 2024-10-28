@@ -25,6 +25,11 @@ import NewtonDividedDiff from './methods/Interpolation/NewtonDividedDiff.jsx';
 import LagrangePolynomial from './methods/Interpolation/LagrangePolynomial.jsx';
 import SplineInterpolation from './methods/Interpolation/SplineInterpolation.jsx';
 
+import LeastSquaresRegression from './methods/Extrapolation/LeastSquaresRegression.jsx';
+import MultipleLinearRegression from './methods/Extrapolation/MultipleLinearRegression.jsx';
+
+import TrapezoidalRule from './methods/Integration/Trapezoidal.jsx';
+
 const methodComponents = {
   "Graphical": Graphical,
   "Bisection": Bisection,
@@ -46,6 +51,11 @@ const methodComponents = {
   "NewtonDividedDiff": NewtonDividedDiff,
   "LagrangePolynomial": LagrangePolynomial,
   "SplineInterpolation": SplineInterpolation,
+
+  "LeastSquaresRegression": LeastSquaresRegression,
+  "MultipleLinearRegression": MultipleLinearRegression,
+  
+  "Trapezoidal": TrapezoidalRule,
 };
 
 const SolutionPage = () => {

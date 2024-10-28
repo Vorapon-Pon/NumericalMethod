@@ -13,7 +13,7 @@ mongoose.connect('mongodb+srv://voraponwpon:d52uQ9sC7TOzUtTw@cluster.r06og.mongo
 });
 
 // Define a schema and model for the examples
-const exampleSchema = new mongoose.Schema({
+const exampleRootSchema = new mongoose.Schema({
   equation: String,
   xL: Number,
   xR: Number,
@@ -22,7 +22,7 @@ const exampleSchema = new mongoose.Schema({
   method: String, // Field to differentiate methods
 });
 
-const Example = mongoose.model('Example', exampleSchema);
+const Example = mongoose.model('Example', exampleRootSchema);
 
 // API route to get Bisection examples
 app.get('/bisection', async (req, res) => {
@@ -68,6 +68,16 @@ app.get('/secant', async (req, res) => {
 app.get('/onepointiteration', async (req, res) => {
   try {
     const examples = await Example.find({ method: 'OnePoint' });
+    res.json(examples);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching One Point Iteration examples' });
+  }
+});
+
+// API route to get Graphical examples
+app.get('/graphical', async (req, res) => {
+  try {
+    const examples = await Example.find({ method: 'Graphical' });
     res.json(examples);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching One Point Iteration examples' });

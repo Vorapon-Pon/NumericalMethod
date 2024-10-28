@@ -173,6 +173,7 @@ const BisectionMethod = () => {
           />
 
           <h3 className="text-xl font-semibold mt-6 mb-2">Iteration Table</h3>
+          <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-gray-300">
             <thead>
               <tr className="bg-gray-100">
@@ -197,6 +198,7 @@ const BisectionMethod = () => {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </div>

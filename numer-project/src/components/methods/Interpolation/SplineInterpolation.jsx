@@ -8,7 +8,7 @@ import 'katex/dist/katex.min.css';
 import { Switch } from '@/components/ui/switch';
 
 const SplineInterpolation = () => {
-  const [points, setPoints] = useState([{ x: 0, fx: 0 }]); 
+  const [points, setPoints] = useState([{ x: '', fx: '' }]); 
   const [numberOfPoints, setNumberOfPoints] = useState(1);
   const [interpolateValueX, setInterpolateValueX] = useState(2);
   const [LinearSlope, setSlope] = useState([]);
@@ -17,7 +17,7 @@ const SplineInterpolation = () => {
   const [interpolationType, setInterpolationType] = useState('linear');
 
   const addPoint = () => {
-    setPoints([...points, { x: 0, fx: 0 }]);
+    setPoints([...points, { x: '', fx: '' }]);
     setNumberOfPoints(numberOfPoints + 1);
   };
 
@@ -50,9 +50,48 @@ const SplineInterpolation = () => {
         }
       }
     } else if (interpolationType === 'quadratic') {
-      
+      let splineEq = '';
+      let a = [], b = [], c = [];
+      // Assuming natural boundary conditions (c_0 = 0)
+      c[0] = 0;
+  
+      // Solving for quadratic spline coefficients
+      for (let i = 0; i < n - 1; i++) {
+        const x0 = points[i].x;
+        const x1 = points[i + 1].x;
+        const y0 = points[i].fx;
+        const y1 = points[i + 1].fx;
+  
+        a[i] = y0;
+        b[i] = (y1 - y0) / (x1 - x0) - (c[i] * (x1 - x0));
+        c[i + 1] = (2 * (y1 - y0) / Math.pow(x1 - x0, 2)) - (2 * b[i] / (x1 - x0));
+  
+        splineEq += `\\ f_${i + 1}(x) = ${a[i]} + (${b[i]})(x - ${x0}) + (${c[i]})(x - ${x0})^2 ; \\quad ${x0} \\leq x \\leq${x1} \\\\`;
+      }
+  
+      setSplineEquation(splineEq);
     } else if (interpolationType === 'cubic') {
-     
+      let splineEq = '';
+      let a = [], b = [], c = [], d = [];
+      // Assuming natural boundary conditions (second derivatives at endpoints are 0)
+      c[0] = c[n - 1] = 0;
+  
+      // Solving for cubic spline coefficients
+      for (let i = 0; i < n - 1; i++) {
+        const x0 = points[i].x;
+        const x1 = points[i + 1].x;
+        const y0 = points[i].fx;
+        const y1 = points[i + 1].fx;
+  
+        a[i] = y0;
+        b[i] = (y1 - y0) / (x1 - x0) - (c[i] * (x1 - x0)) - (d[i] * Math.pow(x1 - x0, 2));
+        d[i] = (c[i + 1] - c[i]) / (3 * (x1 - x0));
+        c[i + 1] = (3 * (y1 - y0) / Math.pow(x1 - x0, 2)) - (2 * b[i] / (x1 - x0)) - d[i];
+  
+        splineEq += `\\ f_${i + 1}(x) = ${a[i]} + (${b[i]})(x - ${x0}) + (${c[i]})(x - ${x0})^2 + (${d[i]})(x - ${x0})^3 ; \\quad ${x0} \\leq x \\leq${x1} \\\\`;
+      }
+  
+      setSplineEquation(splineEq);
     }
   };
 

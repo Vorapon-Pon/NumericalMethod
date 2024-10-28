@@ -99,6 +99,40 @@ const methodsData = {
         path: "/interpolation/SplineInterpolation"
       }
     ],
+    "extrapolation" : [
+      {
+        title: "Least Square Regression (Linear/Polynomial)",
+        desc: "Finds the best-fit line through a set of data points using the least squares method.",
+        path: "/extrapolation/LeastSquaresRegression"
+      },
+      {
+        title: "Least Square Regression (Multiple Linear)",
+        desc: "Finds the best-fit line through a set of data points using the least squares method.",
+        path: "/extrapolation/MultipleLinearRegression"
+      },
+    ],
+    "integration" : [
+      {
+        title: "Trapezoidal Rule",
+        desc: "Approximates the definite integral of a function using trapezoids.",
+        path: "/integration/Trapezoidal"
+      },
+      {
+        title: "Composite Trapezoidal Rule",
+        desc: "Approximates the definite integral of a function using multiple trapezoids.",
+        path: "/integration/CompositeTrapezoidal"
+      },
+      {
+        title: "Simpson Rule",
+        desc: "Approximates the definite integral of a function using quadratic polynomials.",
+        path: "/integration/Simpson"
+      },
+      {
+        title: "Composite Simpson Rule",
+        desc: "Approximates the definite integral of a function using multiple quadratic polynomials.",
+        path: "/integration/CompositeSimpson"
+      },
+    ],
   };
   
   export default methodsData;

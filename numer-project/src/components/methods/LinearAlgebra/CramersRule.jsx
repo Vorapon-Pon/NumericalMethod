@@ -6,27 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 
-const determinantNxN = (matrix) => {
-  const n = matrix.length;
-
-  if (n === 1) return matrix[0][0];
-
-  if (n === 2) {
-    return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
-  }
-
-  let det = 0;
-
-  for (let col = 0; col < n; col++) {
-    const minor = matrix.slice(1).map((row) =>
-      row.filter((_, index) => index !== col)
-    );
-    det += matrix[0][col] * determinantNxN(minor) * (col % 2 === 0 ? 1 : -1);
-  }
-
-  return det;
-};
-
 const CramersRule = () => {
   const [matrixSize, setMatrixSize] = useState(3);
   const [matrix, setMatrix] = useState(Array.from({ length: 3 }, () => Array(3).fill('')));
@@ -53,12 +32,6 @@ const CramersRule = () => {
     setB(newB);
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      calculateCramersRule();
-    }
-  };
-
   const fillEmptyWithZero = () => {
     const filledMatrix = matrix.map((row) =>
       row.map((col) => (col === '' ? '0' : col))
@@ -76,6 +49,33 @@ const CramersRule = () => {
     }
     return b.every(value => value !== '');
   };
+
+  const determinantNxN = (matrix) => {
+    const n = matrix.length;
+  
+    if (n === 1) return matrix[0][0];
+  
+    if (n === 2) {
+      return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+    }
+  
+    let det = 0;
+  
+    for (let col = 0; col < n; col++) {
+      const minor = matrix.slice(1).map((row) =>
+        row.filter((_, index) => index !== col)
+      );
+      det += matrix[0][col] * determinantNxN(minor) * (col % 2 === 0 ? 1 : -1);
+    }
+
+    if(det === 0) {
+      alert('Cramers rule does not apply determinant matrix 0');
+      return;
+    }
+  
+    return det;
+  };
+  
 
   const calculateCramersRule = () => {
     if (!isMatrixFilled()) {

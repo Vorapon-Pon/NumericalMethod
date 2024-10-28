@@ -1,0 +1,144 @@
+[
+    {
+        "method": "CramerRule",
+        "dimension": 3,
+        "matrix": [[-2, 3, 1], [3, 4, -5], [1, -2, 1]],
+        "solution": [9, 0, -4],
+        "precision": 6
+    },
+    {
+        "method": "CramerRule",
+        "dimension": 4,
+        "matrix": [[5, 2, 0, 0], [2, 5, 2, 0], [0, 2, 5, 2], [0, 0, 2, 5]],
+        "solution": [12, 17, 14, 7],
+        "precision": 6
+    },
+    {
+        "method": "GaussElimination",
+        "dimension": 3,
+        "matrix": [[2, 3, 3], [1, 2, -1], [3, 1, 2]],
+        "solution": [10, 10, 10],
+        "precision": 6
+    },
+    {
+        "method": "GaussElimination",
+        "dimension": 3,
+        "matrix": [[-2, 3, 1], [3, 4, -5], [1, -2, 1]],
+        "solution": [9, 0, -4],
+        "precision": 6    
+    },
+    {
+        "method": "GaussJordan",
+        "dimension": 3,
+        "matrix": [[1, 2, -1], [3, -1, 2], [2, 3, 1]],
+        "solution": [1, 2, 3],
+        "precision": 6
+    },
+    {
+        "method": "GaussJordan",
+        "dimension": 3,
+        "matrix": [[-2, 3, 1], [3, 4, -5], [1, -2, 1]],
+        "solution": [9, 0, -4],
+        "precision": 6 
+      
+    },
+    {
+        "method": "MatrixInversion",
+        "dimension": 3,
+        "matrix": [[-2, 3, 1], [3, 4, -5], [1, -2, 1]],
+        "solution": [9, 0, -4],
+        "precision": 6 
+    },
+    {
+        "method": "MatrixInversion",
+        "dimension": 3,
+        "matrix": [[1, 2, -1], [3, -1, 2], [2, 3, 1]],
+        "solution": [1, 2, 3],
+        "precision": 6
+      
+    },
+    {
+        "method": "LUDecomposition",
+        "dimension": 3,
+        "matrix": [[-2, 3, 1], [3, 4, -5], [1, -2, 1]],
+        "solution": [9, 0, -4],
+        "precision": 6 
+    },
+    {
+        "method": "LUDecomposition",
+        "dimension": 4,
+        "matrix": [[5, 2, 0, 0], [2, 5, 2, 0], [0, 2, 5, 2], [0, 0, 2, 5]],
+        "solution": [12, 17, 14, 7],
+        "precision": 6
+       
+    },
+    {
+        "method": "CholeskyDecomposition",
+        "dimension": 3,
+        "matrix": [[4, 3, 1], [3, 5, 2], [1, 2, 6]],
+        "solution": [3125, 3150, 2800],
+        "precision": 6 
+    },
+    {
+        "method": "CholeskyDecomposition",
+        "dimension": 4,
+        "matrix": [[5, 2, 0, 0], [2, 5, 2, 0], [0, 2, 5, 2], [0, 0, 2, 5]],
+        "solution": [12, 17, 14, 7],
+        "precision": 6
+    },
+    {
+        "method": "JacobiIteration",
+        "dimension": 3,
+        "matrix": [[5, 2, 1], [2, 6, 1], [1, 1, 7]],
+        "solution": [2, -4, 3],
+        "initialX": [0,0,0],
+        "Iteration": 15,
+        "precision": 6
+    },
+    {
+        "method": "JacobiIteration",
+        "dimension": 3,
+        "matrix": [[4, 3, 1], [3, 5, 2], [1, 2, 6]],
+        "solution": [3125, 3150, 2800],
+        "initialX": [0,0,0],
+        "Iteration": 15,
+        "precision": 6 
+    },
+    {
+        "method": "GaussSeidel",
+        "dimension": 4,
+        "matrix": [[5, 2, 0, 0], [2, 5, 2, 0], [0, 2, 5, 2], [0, 0, 2, 5]],
+        "solution": [12, 17, 14, 7],
+        "initialX": [0,0,0],
+        "Iteration": 15,
+        "precision": 6
+    },
+    {
+        "method": "GaussSeidel",
+        "dimension": 3,
+        "matrix": [[-2, 3, 1], [3, 4, -5], [1, -2, 1]],
+        "solution": [9, 0, -4],
+        "initialX": [0,0,0],
+        "Iteration": 15,
+        "precision": 6 
+    },
+    {
+        "method": "ConjugateGradient",
+        "dimension": 4,
+        "matrix": [[5, 2, 0, 0], [2, 5, 2, 0], [0, 2, 5, 2], [0, 0, 2, 5]],
+        "solution": [12, 17, 14, 7],
+        "initialX": [0,0,0],
+        "tolerance": 0.000001,
+        "precision": 6
+    },
+    {
+        "method": "ConjugateGradient",
+        "dimension": 4,
+        "matrix": [[5, 2, 0, 0], [2, 5, 2, 0], [0, 2, 5, 2], [0, 0, 2, 5]],
+        "solution": [12, 17, 14, 7],
+        "initialX": [0,0,0],
+        "tolerance": 0.000001,
+        "precision": 6
+    }
+  ]
+  
