@@ -118,19 +118,9 @@ const methodsData = {
         path: "/integration/Trapezoidal"
       },
       {
-        title: "Composite Trapezoidal Rule",
-        desc: "Approximates the definite integral of a function using multiple trapezoids.",
-        path: "/integration/CompositeTrapezoidal"
-      },
-      {
         title: "Simpson Rule",
         desc: "Approximates the definite integral of a function using quadratic polynomials.",
         path: "/integration/Simpson"
-      },
-      {
-        title: "Composite Simpson Rule",
-        desc: "Approximates the definite integral of a function using multiple quadratic polynomials.",
-        path: "/integration/CompositeSimpson"
       },
     ],
   };

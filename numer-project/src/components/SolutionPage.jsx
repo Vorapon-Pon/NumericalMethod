@@ -29,6 +29,7 @@ import LeastSquaresRegression from './methods/Extrapolation/LeastSquaresRegressi
 import MultipleLinearRegression from './methods/Extrapolation/MultipleLinearRegression.jsx';
 
 import TrapezoidalRule from './methods/Integration/Trapezoidal.jsx';
+import SimpsonRule from './methods/Integration/Simpson.jsx';
 
 const methodComponents = {
   "Graphical": Graphical,
@@ -56,6 +57,7 @@ const methodComponents = {
   "MultipleLinearRegression": MultipleLinearRegression,
   
   "Trapezoidal": TrapezoidalRule,
+  "Simpson": SimpsonRule,
 };
 
 const SolutionPage = () => {
