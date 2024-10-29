@@ -52,61 +52,198 @@ const SimpsonRule = () => {
         formula += `\\text{} \\\\ I = \\frac{${h}}{3} 
         \\left[${evaluate(Equation, { x: a})} + 4\\left[ ${evaluate(Equation, { x: a + h})} \\right] + ${evaluate(Equation, { x: b})} \\right] \\\\`
 
+        const curvePoints = Array.from({ length: 100 }, (_, i) => {
+          const x = (a - 1) + (i / 99) * ((b + 1) - (a - 1)); // Extend range by 1 on each side
+          return { x, y: evaluate(Equation, { x }) };
+        });
+
+        const functionCurve = {
+          x: curvePoints.map(p => p.x),
+          y: curvePoints.map(p => p.y),
+          type: 'scatter',
+          mode: 'lines',
+          name: 'f(x)',
+          line: { color: 'red' },
+        };
+
+        const simpsonLine = {
+          x: [a, a + h, b],
+          y: [fa, evaluate(Equation, { x: a + h }), fb],
+          type: 'scatter',
+          mode: 'lines',
+          line: { color: 'blue', dash: 'dash' },
+          name: 'Simpson f(x)',
+        };
+
+        const simpsonFill = {
+          x: [a, a + h, b, b, a],
+          y: [fa, evaluate(Equation, { x: a + h }), fb, 0, 0],
+          type: 'scatter',
+          fill: 'tozeroy',
+          fillcolor: 'rgba(135, 206, 250, 0.4)',
+          name: 'Simpson Area',
+          mode: 'none',
+        };
+
+        const verticalDashes = [
+          {
+            x: [a, a],
+            y: [0, fa],
+            type: 'scatter',
+            mode: 'lines',
+            line: { color: 'blue', dash: 'dash' },
+            showlegend: false,
+          },
+          {
+            x: [b, b],
+            y: [0, fb],
+            type: 'scatter',
+            mode: 'lines',
+            line: { color: 'blue', dash: 'dash' },
+            showlegend: false,
+          },
+          {
+            x: [a + h, a + h],
+            y: [0, evaluate(Equation, { x: a + h })],
+            type: 'scatter',
+            mode: 'lines',
+            line: { color: 'green', dash: 'dash' },
+            showlegend: false,
+          },
+        ];
+
+        setPlotData([functionCurve, simpsonLine, simpsonFill, ...verticalDashes]);
+
         setFormula(formula);
     }else {
         let formula = `\\text{Using } h = \\frac{b - a}{n}; \\text{} h = \\frac{${b} - ${a}}{${n * 2}} = ${h}, \\\\`;
         formula += `\\ I = \\frac{h}{3} \\left[f(x_0) + f(x_n) + 4 \\sum_{i=1,3,5,...}^{n-1} f(x_i) + 2 \\sum_{i=2,4,6,...}^{n-2} f(x_i) \\right] \\\\`;
         formula += `\\ I = \\frac{h}{3} \\left[f(${a}) + f(${b}) + 4\\left[`;
 
-for (let i = 1; i < (n * 2); i += 2) {
-    const xi = a + i * h;
-    formula += `f(${xi})`;
-    if (i < (n * 2) - 1) {  // Corrected condition
-        formula += ` + `;
+        for (let i = 1; i < (n * 2); i += 2) {
+          const xi = a + i * h;
+          formula += `f(${xi})`;
+          if (i < (n * 2) - 1) {  
+            formula += ` + `;
+          }
+        }
+
+        formula += `\\right] + 2\\left[`;
+
+        for (let i = 2; i < (n * 2); i += 2) {
+          const xi = a + i * h;
+          formula += `f(${xi})`;
+          if (i < (n * 2) - 2) { 
+              formula += ` + `;
+          }
+        }
+
+        formula += `\\right]\\right] \\\\`;
+
+        formula += `\\text{} \\\\ \\quad \\begin{align*}`;
+        for (let i = 0; i <= n * 2; i++) {
+          const xi = a + i * h;
+          const fx = evaluate(Equation, { x: xi });
+          formula += `&x_${i} = ${xi}; \\quad f(x_${i}) = ${Equation.replace(/x/g, `(${xi})`)} = ${fx} \\\\ \\quad `;
+        }
+        formula += `\\end{align*}`;
+
+        formula += `\\text{} \\\\ I = \\frac{${h}}{3} \\left[
+        ${evaluate(Equation, { x: a })} + ${evaluate(Equation, { x: b })} + 4\\left[ `;
+        for (let i = 1; i < (n * 2); i += 2) {
+          const xi = a + i * h;
+          formula += `${evaluate(Equation, { x: xi })}`;
+          if (i < (n * 2) - 1) { 
+            formula += ` + `;
+          }
+        }
+
+        formula += `\\right] + 2\\left[`;
+
+        for (let i = 2; i < (n * 2); i += 2) {
+          const xi = a + i * h;
+          formula += `${evaluate(Equation, { x: xi })}`;
+          if (i < (n * 2) - 2) {  
+            formula += ` + `;
+          }
+        }
+        formula += `\\right]\\right] \\\\`
+        setFormula(formula);
+
+const curvePoints = Array.from({ length: 100 }, (_, i) => {
+  const x = (a - 1) + (i / 99) * ((b + 1) - (a - 1)); // Extend range by 1 on each side
+  return { x, y: evaluate(Equation, { x }) };
+});
+
+const functionCurve = {
+  x: curvePoints.map(p => p.x),
+  y: curvePoints.map(p => p.y),
+  type: 'scatter',
+  mode: 'lines',
+  name: 'f(x)',
+  line: { color: 'red' },
+};
+
+const simpsonLines = [];
+const simpsonFills = [];
+const verticalDashes = [];
+for (let i = 0; i < n; i++) {
+  const x0 = a + i * 2 * h;
+  const x1 = x0 + h;
+  const x2 = x0 + 2 * h;
+  const y0 = evaluate(Equation, { x: x0 });
+  const y1 = evaluate(Equation, { x: x1 });
+  const y2 = evaluate(Equation, { x: x2 });
+
+  simpsonLines.push({
+    x: [x0, x1, x2],
+    y: [y0, y1, y2],
+    type: 'scatter',
+    mode: 'lines',
+    line: { color: 'blue', dash: 'dash' },
+    name: `Simpson f(x) ${i + 1}`,
+  });
+
+  simpsonFills.push({
+    x: [x0, x1, x2, x2, x0],
+    y: [y0, y1, y2, 0, 0],
+    type: 'scatter',
+    fill: 'tozeroy',
+    fillcolor: 'rgba(135, 206, 250, 0.4)',
+    name: `Simpson Area ${i + 1}`,
+    mode: 'none',
+    showlegend: false,
+  });
+
+  verticalDashes.push(
+    {
+      x: [x0, x0],
+      y: [0, y0],
+      type: 'scatter',
+      mode: 'lines',
+      line: { color: 'blue', dash: 'dash' },
+      showlegend: false,
+    },
+    {
+      x: [x1, x1],
+      y: [0, y1],
+      type: 'scatter',
+      mode: 'lines',
+      line: { color: 'green', dash: 'dash' },
+      showlegend: false,
+    },
+    {
+      x: [x2, x2],
+      y: [0, y2],
+      type: 'scatter',
+      mode: 'lines',
+      line: { color: 'blue', dash: 'dash' },
+      showlegend: false,
     }
+  );
 }
 
-formula += `\\right] + 2\\left[`;
-
-for (let i = 2; i < (n * 2); i += 2) {
-    const xi = a + i * h;
-    formula += `f(${xi})`;
-    if (i < (n * 2) - 2) {  // Corrected condition
-        formula += ` + `;
-    }
-}
-
-formula += `\\right]\\right] \\\\`;
-
-formula += `\\text{} \\\\ \\quad \\begin{align*}`;
-for (let i = 0; i <= n * 2; i++) {
-    const xi = a + i * h;
-    const fx = evaluate(Equation, { x: xi });
-    formula += `&x_${i} = ${xi}; \\quad f(x_${i}) = ${Equation.replace(/x/g, `(${xi})`)} = ${fx} \\\\ \\quad `;
-}
-formula += `\\end{align*}`;
-
-formula += `\\text{} \\\\ I = \\frac{${h}}{3} \\left[
-    ${evaluate(Equation, { x: a })} + ${evaluate(Equation, { x: b })} + 4\\left[ `;
-for (let i = 1; i < (n * 2); i += 2) {
-    const xi = a + i * h;
-    formula += `${evaluate(Equation, { x: xi })}`;
-    if (i < (n * 2) - 1) { 
-        formula += ` + `;
-    }
-}
-
-formula += `\\right] + 2\\left[`;
-
-for (let i = 2; i < (n * 2); i += 2) {
-    const xi = a + i * h;
-    formula += `${evaluate(Equation, { x: xi })}`;
-    if (i < (n * 2) - 2) {  
-        formula += ` + `;
-    }
-}
-formula += `\\right]\\right] \\\\`
-setFormula(formula);
+    setPlotData([functionCurve, ...simpsonLines, ...simpsonFills, ...verticalDashes]);
     }
 
     setResult(`I_{${'Simpson'}} \\approx ${integrateArea.toFixed(4)}`);

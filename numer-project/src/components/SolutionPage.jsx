@@ -31,6 +31,8 @@ import MultipleLinearRegression from './methods/Extrapolation/MultipleLinearRegr
 import TrapezoidalRule from './methods/Integration/Trapezoidal.jsx';
 import SimpsonRule from './methods/Integration/Simpson.jsx';
 
+import Differentiation from './methods/Differentiation/Differentiation.jsx';
+
 const methodComponents = {
   "Graphical": Graphical,
   "Bisection": Bisection,
@@ -58,6 +60,8 @@ const methodComponents = {
   
   "Trapezoidal": TrapezoidalRule,
   "Simpson": SimpsonRule,
+
+  "Differentiation": Differentiation,
 };
 
 const SolutionPage = () => {

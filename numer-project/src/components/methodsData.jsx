@@ -123,6 +123,14 @@ const methodsData = {
         path: "/integration/Simpson"
       },
     ],
+    "differentiation" : [
+      {
+        title: "Differentiate",
+        desc: "Approximates the derivative of a function using numerical methods.",
+        path: "/Differentiation/Differentiation"
+      },
+      
+    ],
   };
   
   export default methodsData;
