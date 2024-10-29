@@ -368,7 +368,7 @@ const LeastSquaresRegression = () => {
               </Button>
             </div>
             
-              <div className="mt-6 overflow-auto max-h-96">           
+              <div className="mt-6 overflow-x-auto max-h-96">           
                 <BlockMath math={regressionEquation} />          
                 <BlockMath math={matrixFormula} />
                 <BlockMath math={matrixFormulaResult} />
