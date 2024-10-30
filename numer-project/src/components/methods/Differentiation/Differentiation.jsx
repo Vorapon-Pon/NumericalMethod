@@ -65,14 +65,14 @@ const Differentiation = () => {
   
   const backwardCalculate = (x, h) => {
     let fxi = f(x);
-        let fxim1 = f(x-(1*h));
-        let fxim2 = f(x-(2*h));
-        let fxim3 = f(x-(3*h));
-        let fxim4 = f(x-(4*h));
+    let fxim1 = f(x-(1*h));
+    let fxim2 = f(x-(2*h));
+    let fxim3 = f(x-(3*h));
+    let fxim4 = f(x-(4*h));
 
-        let result;
-        let formulaLatex = ``;
-        let subFormulaLatex = ``;
+    let result;
+    let formulaLatex = ``;
+    let subFormulaLatex = ``;
         switch (selectedOrder) {
             case "1":
                 result = (fxi-fxim1)/h;
@@ -81,18 +81,18 @@ const Differentiation = () => {
                 break;
             case "2":
                 result = (fxi-(2*fxim1)+fxim2)/(h**2);
-                formulaLatex = `f''(x) = [ f(x_{i}) - 2f(x_{i-1}) + f(x_{i-2}) ] / h^2`;
-                subFormulaLatex = `f''(${x}) = [ (${fxi}) - (${2*fxim1}) + (${fxim2}) ] / ${h**2} = ${result}`;
+                formulaLatex = `f''(x) = \\frac{[ f(x_{i}) - 2f(x_{i-1}) + f(x_{i-2}) ]}{h^2} `;
+                subFormulaLatex = `f''(${x}) = \\frac{[ (${fxi}) - (${2*fxim1}) + (${fxim2}) ]}{${h**2}} = ${result}`;
                 break;
             case "3":
                 result = (fxi-(3*fxim1)+(3*fxim2)-fxim3)/(h**3);
-                formulaLatex = `f'''(x) = [ f(x_{i}) - 3f(x_{i-1}) + 3f(x_{i-2}) - f(x_{i-3}) ] / h^3`;
-                subFormulaLatex = `f'''(${x}) = [ (${fxi}) - (${3*fxim1}) + (${3*fxim2}) - (${fxim3}) ] / ${h**3} = ${result}`;
+                formulaLatex = `f'''(x) = \\frac{[ f(x_{i}) - 3f(x_{i-1}) + 3f(x_{i-2}) - f(x_{i-3}) ]}{h^3}`;
+                subFormulaLatex = `f'''(${x}) = \\frac{[ (${fxi}) - (${3*fxim1}) + (${3*fxim2}) - (${fxim3}) ]}{${h**3}} = ${result}`;
                 break;
             case "4":
                 result = (fxi-(4*fxim1)+(6*fxim2)-(4*fxim3)+fxim4)/(h**4);
-                formulaLatex = `f''''(x) = [ f(x_{i}) - 4f(x_{i-1}) + 6f(x_{i-2}) - 4f(x_{i-3}) + f(x_{i-4}) ] / h^4`;
-                subFormulaLatex = `f''''(${x}) = [ (${fxi}) - (${4*fxim1}) + (${6*fxim2}) - (${4*fxim3}) + (${fxim4}) ] / ${h**4} = ${result}`;
+                formulaLatex = `f''''(x) = \\frac{[ f(x_{i}) - 4f(x_{i-1}) + 6f(x_{i-2}) - 4f(x_{i-3}) + f(x_{i-4}) ]}{h^4}`;
+                subFormulaLatex = `f''''(${x}) = \\frac{[ (${fxi}) - (${4*fxim1}) + (${6*fxim2}) - (${4*fxim3}) + (${fxim4}) ]}{${h**4}}  = ${result}`;
             default:
                 console.log("not matched");
           }
@@ -102,36 +102,38 @@ const Differentiation = () => {
   };
   
   const centerCalculate = (x, h) => {
-    const fx1 = f(x + h);
-    const fx2 = f(x + 2 * h);
-    const fxm1 = f(x - h);
-    const fxm2 = f(x - 2 * h);
-    let result, formulaLatex, subFormulaLatex;
-  
-    switch (selectedOrder) {
-      case "1":
-        result = (fx1 - fxm1) / (2 * h);
-        formulaLatex = `f'(x) = \\frac{f(x + h) - f(x - h)}{2h}`;
-        subFormulaLatex = `f'(${x}) = \\frac{${fx1} - ${fxm1}}{2 \\cdot ${h}} = ${result}`;
-        break;
-      case "2":
-        result = (fx1 - 2 * f(x) + fxm1) / (h ** 2);
-        formulaLatex = `f''(x) = \\frac{f(x + h) - 2f(x) + f(x - h)}{h^2}`;
-        subFormulaLatex = `f''(${x}) = \\frac{${fx1} - 2 \\cdot ${f(x)} + ${fxm1}}{${h}^2} = ${result}`;
-        break;
-      case "3":
-        result = (fx2 - 2 * fx1 + 2 * fxm1 - fxm2) / (2 * h ** 3);
-        formulaLatex = `f'''(x) = \\frac{f(x + 2h) - 2f(x + h) + 2f(x - h) - f(x - 2h)}{2h^3}`;
-        subFormulaLatex = `f'''(${x}) = \\frac{${fx2} - 2 \\cdot ${fx1} + 2 \\cdot ${fxm1} - ${fxm2}}{2 \\cdot ${h}^3} = ${result}`;
-        break;
-      case "4":
-        result = (fx2 - 4 * fx1 + 6 * f(x) - 4 * fxm1 + fxm2) / (h ** 4);
-        formulaLatex = `f''''(x) = \\frac{f(x + 2h) - 4f(x + h) + 6f(x) - 4f(x - h) + f(x - 2h)}{h^4}`;
-        subFormulaLatex = `f''''(${x}) = \\frac{${fx2} - 4 \\cdot ${fx1} + 6 \\cdot ${f(x)} - 4 \\cdot ${fxm1} + ${fxm2}}{${h}^4} = ${result}`;
-        break;
-      default:
-        console.log("Unsupported order for central method");
-    }
+    let fxip2 = f(x+(2*h));
+    let fxip1 = f(x+(1*h));
+    let fxi = f(x);
+    let fxim1 = f(x-(1*h));
+    let fxim2 = f(x-(2*h));
+
+    let result;
+    let formulaLatex = ``;
+    let subFormulaLatex = ``;
+        switch (selectedOrder) {
+            case "1":
+                result = (fxip1-fxim1)/(2*h);
+                formulaLatex = `f'(x) = \\frac{[ f(x_{i+1}) - f(x_{i-1}) ]}{2h}`;
+                subFormulaLatex = `f'(${x}) = \\frac{[ (${fxip1}) - (${fxim1}) ]}{${2*h}} = ${result}`;
+                break;
+            case "2":
+                result = (fxip1-(2*fxi)+fxim1)/(h**2);
+                formulaLatex = `f''(x) = \\frac{[ f(x_{i+1}) - 2f(x_{i}) + f(x_{i-1}) ]}{h^2}`;
+                subFormulaLatex = `f'(${x}) = \\frac{[ (${fxip1}) - (${2*fxi}) + (${fxim1}) ]}{${h**2}} = ${result}`;
+                break;
+            case "3":
+                result = (fxip2-(2*fxip1)+(2*fxim1)-(fxim2))/(2*(h**3));
+                formulaLatex = `f'''(x) = \\frac{[ f(x_{i+2}) - 2f(x_{i+1}) + 2f(x_{i-1}) - f(x_{i-2}) ]}{2h^3}`;
+                subFormulaLatex = `f'(${x}) = \\frac{[ (${fxip2}) - (${2*fxip1}) + (${2*fxim1}) - (${fxim2})]}{${2*(h**3)}} = ${result}`;
+                break;
+            case "4":
+                result = (fxip2-(4*fxip1)+(6*fxi)-(4*fxim1)+(fxim2))/((h**4));
+                formulaLatex = `f''''(x) = \\frac{[ f(x_{i+2}) - 4f(x_{i+1}) + 6f(x_{i}) - 4f(x_{i-1}) + f(x_{i-2}) ]}{h^4}`;
+                subFormulaLatex = `f'(${x}) = \\frac{[ (${fxip2}) - (${4*fxip1}) + (${6*fxi}) - (${4*fxim1}) + (${fxim2})]}{${(h**4)}} = ${result}`;
+            default:
+                console.log("not matched");
+          }
     setFormula(formulaLatex);
     setSubstitude(subFormulaLatex);
     return result;
@@ -162,8 +164,8 @@ const Differentiation = () => {
     const error = Math.abs((result - exactValue) / exactValue) * 100;
 
     let diffEquation = derivative(Equation, 'x');;
-        let exactDiffLatex = `Exact \\ Differentiation \\ of \\ f(x) = ${Equation} \\\\ f'(x) = ${diffEquation.toString()} \\\\ `;
-        let symbol = `'`;
+    let exactDiffLatex = `Exact \\ Differentiation \\ of \\ f(x) = ${Equation} \\\\ f'(x) = ${diffEquation.toString()} \\\\ `;
+    let symbol = `'`;
         for (let i = 2; i <= selectedOrder; i++) {
             symbol += `'`;
             diffEquation = derivative(diffEquation.toString(), 'x');
