@@ -1,0 +1,341 @@
+[
+    {
+      "category": "root",
+      "equation": "x^3 - 5x + 1",
+      "xL": -3,
+      "xR": -1,
+      "tolerance": 1e-06,
+      "precision": 6,
+      "method": "Bisection"
+    },
+    {
+      "category": "root",
+      "equation": "x^2 - 4",
+      "xL": 0,
+      "xR": 3,
+      "tolerance": 1e-06,
+      "precision": 6,
+      "method": "Bisection"
+    },
+    {
+      "category": "root",
+      "equation": "x^2 - 3",
+      "xL": 1,
+      "xR": 2,
+      "tolerance": 1e-06,
+      "precision": 6,
+      "method": "Bisection"
+    },
+    {
+      "category": "root",
+      "equation": "x^3 - x - 2",
+      "xL": 1,
+      "xR": 2,
+      "tolerance": 1e-06,
+      "precision": 6,
+      "method": "Bisection"
+    },
+    {
+      "category": "root",
+      "equation": "sin(x) - x/2",
+      "xL": 1,
+      "xR": 3,
+      "tolerance": 1e-05,
+      "precision": 5,
+      "method": "False Position"
+    },
+    {
+      "category": "root",
+      "equation": "x^2 - 2",
+      "xL": 0,
+      "xR": 2,
+      "tolerance": 1e-05,
+      "precision": 5,
+      "method": "False Position"
+    },
+    {
+      "category": "root",
+      "equation": "x^2 - 5",
+      "xL": 0,
+      "xR": 3,
+      "tolerance": 1e-05,
+      "precision": 5,
+      "method": "False Position"
+    },
+    {
+      "category": "root",
+      "equation": "e^x - x - 2",
+      "xL": 1,
+      "xR": 2,
+      "tolerance": 1e-05,
+      "precision": 5,
+      "method": "False Position"
+    },
+    {
+      "category": "root",
+      "equation": "x^2 - 2",
+      "xL": 1,
+      "xR": 2,
+      "tolerance": 1e-07,
+      "precision": 7,
+      "method": "Newton-Raphson"
+    },
+    {
+      "category": "root",
+      "equation": "x^3 - x - 2",
+      "xL": 1,
+      "xR": 2,
+      "tolerance": 1e-07,
+      "precision": 7,
+      "method": "Newton-Raphson"
+    },
+    {
+      "category": "root",
+      "equation": "e^x - 2",
+      "xL": 0,
+      "xR": 1,
+      "tolerance": 1e-07,
+      "precision": 7,
+      "method": "Newton-Raphson"
+    },
+    {
+      "category": "root",
+      "equation": "sin(x)",
+      "xL": 3,
+      "xR": 4,
+      "tolerance": 1e-07,
+      "precision": 7,
+      "method": "Newton-Raphson"
+    },
+    {
+      "category": "root",
+      "equation": "x^3 - 1",
+      "xL": 0,
+      "xR": 1,
+      "tolerance": 1e-06,
+      "precision": 6,
+      "method": "Secant"
+    },
+    {
+      "category": "root",
+      "equation": "x^2 - 4",
+      "xL": 0,
+      "xR": 3,
+      "tolerance": 1e-06,
+      "precision": 6,
+      "method": "Secant"
+    },
+    {
+      "category": "root",
+      "equation": "e^x - 3",
+      "xL": 1,
+      "xR": 2,
+      "tolerance": 1e-06,
+      "precision": 6,
+      "method": "Secant"
+    },
+    {
+      "category": "root",
+      "equation": "cos(x) - x",
+      "xL": 0,
+      "xR": 1,
+      "tolerance": 1e-06,
+      "precision": 6,
+      "method": "Secant"
+    },
+    {
+      "category": "root",
+      "equation": "x - cos(x)",
+      "xL": 0,
+      "xR": 1,
+      "tolerance": 1e-06,
+      "precision": 6,
+      "method": "One Point Iteration"
+    },
+    {
+      "category": "root",
+      "equation": "x^2 - 2",
+      "xL": 1,
+      "xR": 2,
+      "tolerance": 1e-06,
+      "precision": 6,
+      "method": "One Point Iteration"
+    },
+    {
+      "category": "root",
+      "equation": "x - ln(x)",
+      "xL": 0,
+      "xR": 2,
+      "tolerance": 1e-06,
+      "precision": 6,
+      "method": "One Point Iteration"
+    },
+    {
+      "category": "root",
+      "equation": "x^3 - 4x + 1",
+      "xL": 1,
+      "xR": 2,
+      "tolerance": 1e-06,
+      "precision": 6,
+      "method": "One Point Iteration"
+    },
+    {
+        "category": "linear",
+        "method": "CramerRule",
+        "dimension": 3,
+        "matrix": [[-2, 3, 1], [3, 4, -5], [1, -2, 1]],
+        "solution": [9, 0, -4],
+        "precision": 6
+    },
+    {
+        "category": "linear",
+        "method": "CramerRule",
+        "dimension": 4,
+        "matrix": [[5, 2, 0, 0], [2, 5, 2, 0], [0, 2, 5, 2], [0, 0, 2, 5]],
+        "solution": [12, 17, 14, 7],
+        "precision": 6
+    },
+    {
+        "category": "linear",
+        "method": "GaussElimination",
+        "dimension": 3,
+        "matrix": [[2, 3, 3], [1, 2, -1], [3, 1, 2]],
+        "solution": [10, 10, 10],
+        "precision": 6
+    },
+    {
+        "category": "linear",
+        "method": "GaussElimination",
+        "dimension": 3,
+        "matrix": [[-2, 3, 1], [3, 4, -5], [1, -2, 1]],
+        "solution": [9, 0, -4],
+        "precision": 6    
+    },
+    {
+        "category": "linear",
+        "method": "GaussJordan",
+        "dimension": 3,
+        "matrix": [[1, 2, -1], [3, -1, 2], [2, 3, 1]],
+        "solution": [1, 2, 3],
+        "precision": 6
+    },
+    {
+        "category": "linear",
+        "method": "GaussJordan",
+        "dimension": 3,
+        "matrix": [[-2, 3, 1], [3, 4, -5], [1, -2, 1]],
+        "solution": [9, 0, -4],
+        "precision": 6 
+      
+    },
+    {
+        "category": "linear",
+        "method": "MatrixInversion",
+        "dimension": 3,
+        "matrix": [[-2, 3, 1], [3, 4, -5], [1, -2, 1]],
+        "solution": [9, 0, -4],
+        "precision": 6 
+    },
+    {
+        "category": "linear",
+        "method": "MatrixInversion",
+        "dimension": 3,
+        "matrix": [[1, 2, -1], [3, -1, 2], [2, 3, 1]],
+        "solution": [1, 2, 3],
+        "precision": 6
+      
+    },
+    {
+        "category": "linear",
+        "method": "LUDecomposition",
+        "dimension": 3,
+        "matrix": [[-2, 3, 1], [3, 4, -5], [1, -2, 1]],
+        "solution": [9, 0, -4],
+        "precision": 6 
+    },
+    {
+        "category": "linear",
+        "method": "LUDecomposition",
+        "dimension": 4,
+        "matrix": [[5, 2, 0, 0], [2, 5, 2, 0], [0, 2, 5, 2], [0, 0, 2, 5]],
+        "solution": [12, 17, 14, 7],
+        "precision": 6
+       
+    },
+    {
+        "category": "linear",
+        "method": "CholeskyDecomposition",
+        "dimension": 3,
+        "matrix": [[4, 3, 1], [3, 5, 2], [1, 2, 6]],
+        "solution": [3125, 3150, 2800],
+        "precision": 6 
+    },
+    {
+        "category": "linear",
+        "method": "CholeskyDecomposition",
+        "dimension": 4,
+        "matrix": [[5, 2, 0, 0], [2, 5, 2, 0], [0, 2, 5, 2], [0, 0, 2, 5]],
+        "solution": [12, 17, 14, 7],
+        "precision": 6
+    },
+    {
+        "category": "linear",
+        "method": "JacobiIteration",
+        "dimension": 3,
+        "matrix": [[5, 2, 1], [2, 6, 1], [1, 1, 7]],
+        "solution": [2, -4, 3],
+        "initialX": [0,0,0],
+        "Iteration": 15,
+        "precision": 6
+    },
+    {
+        "category": "linear",
+        "method": "JacobiIteration",
+        "dimension": 3,
+        "matrix": [[4, 3, 1], [3, 5, 2], [1, 2, 6]],
+        "solution": [3125, 3150, 2800],
+        "initialX": [0,0,0],
+        "Iteration": 15,
+        "precision": 6 
+    },
+    {
+        "category": "linear",
+        "method": "GaussSeidel",
+        "dimension": 4,
+        "matrix": [[5, 2, 0, 0], [2, 5, 2, 0], [0, 2, 5, 2], [0, 0, 2, 5]],
+        "solution": [12, 17, 14, 7],
+        "initialX": [0,0,0],
+        "Iteration": 15,
+        "precision": 6
+    },
+    {
+        "category": "linear",
+        "method": "GaussSeidel",
+        "dimension": 3,
+        "matrix": [[-2, 3, 1], [3, 4, -5], [1, -2, 1]],
+        "solution": [9, 0, -4],
+        "initialX": [0,0,0],
+        "Iteration": 15,
+        "precision": 6 
+    },
+    {
+        "category": "linear",
+        "method": "ConjugateGradient",
+        "dimension": 4,
+        "matrix": [[5, 2, 0, 0], [2, 5, 2, 0], [0, 2, 5, 2], [0, 0, 2, 5]],
+        "solution": [12, 17, 14, 7],
+        "initialX": [0,0,0],
+        "tolerance": 0.000001,
+        "precision": 6
+    },
+    {
+        "category": "linear",
+        "method": "ConjugateGradient",
+        "dimension": 4,
+        "matrix": [[5, 2, 0, 0], [2, 5, 2, 0], [0, 2, 5, 2], [0, 0, 2, 5]],
+        "solution": [12, 17, 14, 7],
+        "initialX": [0,0,0],
+        "tolerance": 0.000001,
+        "precision": 6
+    }  
+  ]

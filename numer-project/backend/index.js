@@ -12,17 +12,36 @@ mongoose.connect('mongodb+srv://voraponwpon:d52uQ9sC7TOzUtTw@cluster.r06og.mongo
   useUnifiedTopology: true,
 });
 
-// Define a schema and model for the examples
-const exampleRootSchema = new mongoose.Schema({
+const exampleSchema = new mongoose.Schema({
+  category: { type: String, required: true },
+  method: { type: String, required: true },
+  
   equation: String,
   xL: Number,
   xR: Number,
   tolerance: Number,
+
+
   precision: Number,
-  method: String, // Field to differentiate methods
+
+  dimension: Number,
+  matrix: [[Number]],
+  solution: [Number],
+  initialX: [Number],     
+  iteration: Number,      
 });
 
-const Example = mongoose.model('Example', exampleRootSchema);
+const Example = mongoose.model('example', exampleSchema);
+
+// API route to get Cramer Rule examples
+app.get('/cramer', async (req, res) => {
+  try {
+    const examples = await Example.find({ method: 'CramerRule' });
+    res.json(examples);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching Cramer examples' });
+  }
+});
 
 // API route to get Bisection examples
 app.get('/bisection', async (req, res) => {
@@ -81,6 +100,46 @@ app.get('/graphical', async (req, res) => {
     res.json(examples);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching One Point Iteration examples' });
+  }
+});
+
+// API route to get Gauss Elimination examples
+app.get('/gausselimination', async (req, res) => {
+  try {
+    const examples = await Example.find({ method: 'GaussElimination' });
+    res.json(examples);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching Gauss Elimination examples' });
+  }
+});
+
+// API route to get LU Decomposition examples
+app.get('/ludecomposition', async (req, res) => {
+  try {
+    const examples = await Example.find({ method: 'LUDecomposition' });
+    res.json(examples);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching LU Decomposition examples' });
+  }
+});
+
+// API route to get Jacobi Method examples
+app.get('/jacobi', async (req, res) => {
+  try {
+    const examples = await Example.find({ method: 'JacobiIteration' });
+    res.json(examples);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching Jacobi examples' });
+  }
+});
+
+// API route to get Gauss-Seidel Method examples
+app.get('/gaussseidel', async (req, res) => {
+  try {
+    const examples = await Example.find({ method: 'GaussSeidel' });
+    res.json(examples);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching Gauss-Seidel examples' });
   }
 });
 
