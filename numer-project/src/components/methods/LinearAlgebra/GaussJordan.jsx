@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { BlockMath } from 'react-katex';
+import axios from 'axios';
 import 'katex/dist/katex.min.css';
 
 const GaussJordanElimination = () => {
@@ -12,6 +14,31 @@ const GaussJordanElimination = () => {
   const [results, setResults] = useState(null);
   const [steps, setSteps] = useState([]);
   const [precision, setPrecision] = useState(6);
+  const [examples, setExamples] = useState([]); // To store the list of examples
+  const [selectedExample, setSelectedExample] = useState('');
+  const [method, setMethod] = useState('jordan');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/${method}`);
+        setExamples(response.data);
+      } catch (error) {
+        console.error('Error fetching examples:', error);
+      }
+    };
+
+    fetchData();
+  }, [method]);
+
+  const handleSelectExample = (value) => {
+    const selected = examples[value];
+    if (selected) {
+      setMatrixSize(selected.dimension); 
+      setMatrix(selected.matrix); 
+      setPrecision(selected.precision); 
+    }
+  };
 
   const handleMatrixSizeChange = (e) => {
     const size = parseInt(e.target.value, 10);
@@ -142,6 +169,23 @@ const GaussJordanElimination = () => {
                 />
               </div>
             </div>
+          </div>
+
+          {/* Dropdown to choose an example */}
+          <div className="mb-4">
+            <Label htmlFor="example">Choose an Example</Label>
+            <Select value={selectedExample} onValueChange={handleSelectExample}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select an example" />
+              </SelectTrigger>
+            <SelectContent>
+            {examples.map((example, index) => (
+              <SelectItem key={index} value={index.toString()}>
+                {`Example ${index + 1}: ${example.dimension} x ${example.dimension + 1} augmented Matrix`}
+              </SelectItem>
+            ))}
+            </SelectContent>
+            </Select>
           </div>
 
           <div className="flex space-x-2">

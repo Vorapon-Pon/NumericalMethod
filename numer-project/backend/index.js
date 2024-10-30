@@ -33,16 +33,6 @@ const exampleSchema = new mongoose.Schema({
 
 const Example = mongoose.model('example', exampleSchema);
 
-// API route to get Cramer Rule examples
-app.get('/cramer', async (req, res) => {
-  try {
-    const examples = await Example.find({ method: 'CramerRule' });
-    res.json(examples);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching Cramer examples' });
-  }
-});
-
 // API route to get Bisection examples
 app.get('/bisection', async (req, res) => {
   try {
@@ -103,6 +93,16 @@ app.get('/graphical', async (req, res) => {
   }
 });
 
+// API route to get Cramer Rule examples
+app.get('/cramer', async (req, res) => {
+  try {
+    const examples = await Example.find({ method: 'CramerRule' });
+    res.json(examples);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching Cramer examples' });
+  }
+});
+
 // API route to get Gauss Elimination examples
 app.get('/gausselimination', async (req, res) => {
   try {
@@ -113,6 +113,26 @@ app.get('/gausselimination', async (req, res) => {
   }
 });
 
+// API route to get Gauss Jordan examples
+app.get('/jordan', async (req, res) => {
+  try {
+    const examples = await Example.find({ method: 'GaussJordan' });
+    res.json(examples);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching Gauss Elimination examples' });
+  }
+});
+
+// API route to get Matrix Inversion examples
+app.get('/inversion', async (req, res) => {
+  try {
+    const examples = await Example.find({ method: 'MatrixInversion' });
+    res.json(examples);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching Matrix Inversion examples' });
+  }
+});
+
 // API route to get LU Decomposition examples
 app.get('/ludecomposition', async (req, res) => {
   try {
@@ -120,6 +140,16 @@ app.get('/ludecomposition', async (req, res) => {
     res.json(examples);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching LU Decomposition examples' });
+  }
+});
+
+// API route to get LU Decomposition examples
+app.get('/cholesky', async (req, res) => {
+  try {
+    const examples = await Example.find({ method: 'CholeskyDecomposition' });
+    res.json(examples);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching Cholesky Decomposition examples' });
   }
 });
 
@@ -140,6 +170,15 @@ app.get('/gaussseidel', async (req, res) => {
     res.json(examples);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching Gauss-Seidel examples' });
+  }
+});
+
+app.get('/conjugate', async (req, res) => {
+  try {
+    const examples = await Example.find({ method: 'ConjugateGradient' });
+    res.json(examples);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching Conjugate Gradient examples' });
   }
 });
 

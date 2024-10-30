@@ -1,9 +1,11 @@
-import React, { useState } from 'react'; 
+import React, { useState, useEffect } from 'react'; 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { BlockMath } from 'react-katex';
+import axios from 'axios';
 import 'katex/dist/katex.min.css';
 
 const formatMatrixWithColor = (mat, rowColorMap = {}, precision = 2, withLine = true) => {
@@ -25,6 +27,32 @@ const MatrixInversion = () => {
     const [steps, setSteps] = useState([]);
     const [precision, setPrecision] = useState(2);
     const [solutionVector, setSolutionVector] = useState(null); 
+    const [examples, setExamples] = useState([]); // To store the list of examples
+    const [selectedExample, setSelectedExample] = useState('');
+    const [method, setMethod] = useState('inversion');
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`http://localhost:5000/${method}`);
+          setExamples(response.data);
+        } catch (error) {
+          console.error('Error fetching examples:', error);
+        }
+      };
+  
+      fetchData();
+    }, [method]);
+  
+    const handleSelectExample = (value) => {
+      const selected = examples[value];
+      if (selected) {
+        setMatrixSize(selected.dimension); 
+        setMatrix(selected.matrix); 
+        setVectorB  (selected.solution); 
+        setPrecision(selected.precision); 
+      }
+    };
 
     const handleMatrixSizeChange = (e) => {
         const size = parseInt(e.target.value, 10);
@@ -191,6 +219,23 @@ const MatrixInversion = () => {
                         </div>
                     </div>
 
+                    {/* Dropdown to choose an example */}
+                    <div div className="mb-4">
+                        <Label htmlFor="example">Choose an Example</Label>
+                        <Select value={selectedExample} onValueChange={handleSelectExample}>
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select an example" />
+                        </SelectTrigger>
+                        <SelectContent>
+                        {examples.map((example, index) => (
+                        <SelectItem key={index} value={index.toString()}>
+                            {`Example ${index + 1}: ${example.dimension} Dimension`}
+                        </SelectItem>
+                        ))}
+                        </SelectContent>
+                        </Select>
+                    </div>
+
                     <div className="flex space-x-2">
                         <Button onClick={calculateMatrixInversion} className="bg-neutral-950 hover:bg-neutral-800">
                             Calculate
@@ -205,7 +250,7 @@ const MatrixInversion = () => {
                 </CardContent>
             </Card>
 
-            <div className="mt-4 mx-auto p-5">
+            <div className="mt-4 mx-auto p-5 overflow-x-auto">
                 {results && (
                     <div className="mt-4 space-y-4">
                         <BlockMath math={`\\text{Matrix Inversion Solution Steps}`} />
@@ -220,7 +265,7 @@ const MatrixInversion = () => {
                 )}
 
                 {solutionVector && (
-                    <div className="mt-4">
+                    <div className="mt-4 overflow-x-auto">
                       <BlockMath math={`A^{-1}B = x`}/>
                       <BlockMath 
                       math={`${formatMatrixWithColor(results.inverse, {}, precision, false)} 

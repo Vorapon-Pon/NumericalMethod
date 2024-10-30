@@ -37,7 +37,8 @@ const CramersRule = () => {
       setMatrixSize(selected.dimension); 
       setMatrix(selected.matrix); 
       setB(selected.solution); 
-      setPrecision(selected.precision); 
+      setPrecision(selected.precision);
+      setSelectedExample(value); 
     }
   };
   
