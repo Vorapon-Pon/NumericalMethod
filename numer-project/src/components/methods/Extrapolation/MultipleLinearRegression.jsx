@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import Plot from 'react-plotly.js';
+import axios from 'axios';
 import { lusolve } from 'mathjs';
 
 const MultipleLinearRegression = () => {
@@ -19,6 +21,40 @@ const MultipleLinearRegression = () => {
   const [regressionEquationSub, setRegressionEquationSub] = useState('');
   const [result, setResult] = useState('');
   const [plotData, setPlotData] = useState(null);
+  const [examples, setExamples] = useState([]); // To store the list of examples
+  const [selectedExample, setSelectedExample] = useState('');
+  const [method, setMethod] = useState('multiple');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/${method}`);
+        setExamples(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching examples:', error);
+      }
+    };
+
+    fetchData();
+  }, [method]);
+
+  const handleSelectExample = (value) => {
+    const selected = examples[value];
+    if (selected) {
+      const pointsArray = selected.y.map((yValue, index) => ({
+        x0: selected.x1[index] ?? '',
+        x1: selected.x2[index] ?? '',
+        x2: selected.x3[index] ?? '',
+        y: yValue ?? '',
+      }));
+
+      setNumberOfPoints(selected.point);
+      setK(selected.k)
+      setPoints(pointsArray);
+      setXValues(selected.atX);
+    }
+  };
 
   const addPoint = () => {
     setPoints([...points, Object.fromEntries([...Array(k).keys()].map(i => [`x${i}`, ''])).y = '']);
@@ -304,6 +340,23 @@ const MultipleLinearRegression = () => {
                 />
               ))}
             </div>
+
+             {/* Dropdown to choose an example */}
+          <div div className="mb-4">
+            <Label htmlFor="example">Choose an Example</Label>
+            <Select value={selectedExample} onValueChange={handleSelectExample}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select an example" />
+            </SelectTrigger>
+            <SelectContent>
+          {examples.map((example, index) => (
+            <SelectItem key={index} value={index.toString()}>
+              {`Example ${index + 1}: ${example.point} Points`}
+            </SelectItem>
+          ))}
+            </SelectContent>
+            </Select>
+          </div>
             
             <div className="flex space-x-2">
               <Button

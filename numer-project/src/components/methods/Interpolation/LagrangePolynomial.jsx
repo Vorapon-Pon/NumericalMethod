@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { Checkbox } from '@/components/ui/checkbox';
 import { BlockMath } from 'react-katex';
+import axios from 'axios';
 import 'katex/dist/katex.min.css';
 
 const LagrangeInterpolation = () => {
@@ -14,6 +16,38 @@ const LagrangeInterpolation = () => {
   const [polynomial, setPolynomial] = useState('');
   const [lagrangeBasis, setLagrangeBasis] = useState([]); 
   const [results, setResults] = useState('');
+  const [examples, setExamples] = useState([]); // To store the list of examples
+  const [selectedExample, setSelectedExample] = useState('');
+  const [method, setMethod] = useState('lagrange');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/${method}`);
+        setExamples(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching examples:', error);
+      }
+    };
+
+    fetchData();
+  }, [method]);
+
+  const handleSelectExample = (value) => {
+    const selected = examples[value];
+    if (selected) {
+      const pointsArray = selected.x.map((xVal, index) => ({
+        x: xVal,
+        fx: selected.y[index],
+        selected: true, 
+      }));
+
+      setNumberOfPoints(selected.point);
+      setPoints(pointsArray); 
+      setInterpolateValueX(selected.atX);
+    }
+  };
 
   const handleInputChange = (index, field, value) => {
     const updatedPoints = [...points];
@@ -151,6 +185,23 @@ const LagrangeInterpolation = () => {
                 />
               </div>
             </div>
+
+            {/* Dropdown to choose an example */}
+          <div div className="mb-4">
+            <Label htmlFor="example">Choose an Example</Label>
+            <Select value={selectedExample} onValueChange={handleSelectExample}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select an example" />
+            </SelectTrigger>
+            <SelectContent>
+          {examples.map((example, index) => (
+            <SelectItem key={index} value={index.toString()}>
+              {`Example ${index + 1}: ${example.point} Points`}
+            </SelectItem>
+          ))}
+            </SelectContent>
+            </Select>
+          </div>
 
             <div className="flex space-x-2">
               <Button

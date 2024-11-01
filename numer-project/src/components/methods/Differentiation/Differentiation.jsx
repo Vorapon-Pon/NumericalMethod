@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';  
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -6,9 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'; 
 import { BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
-import Plot from 'react-plotly.js'; 
 import { evaluate, derivative } from 'mathjs';
-import exp from 'constants';
+import axios from 'axios';
 
 const Differentiation = () => {
   const [Equation, setEquation] = useState("");
@@ -21,6 +20,34 @@ const Differentiation = () => {
   const [substitude, setSubstitude] = useState("");
   const [exactDiff, setExactDiff] = useState("");
   const [errorFormula, setErrorFormula] = useState("");
+  const [examples, setExamples] = useState([]); // To store the list of examples
+  const [selectedExample, setSelectedExample] = useState('');
+  const [method, setMethod] = useState('differentiate');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/${method}`);
+        setExamples(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching examples:', error);
+      }
+    };
+
+    fetchData();
+  }, [method]);
+
+  const handleSelectExample = (value) => {
+    const selected = examples[value];
+    if (selected) {
+      setEquation(selected.equation);
+      setX(selected.x);
+      setH(selected.h);
+      setSelectedOrder(selected.order);
+      setSelectedDirection(selected.direction);
+    }
+  };
 
   const f = (x) => evaluate(Equation, { x });
 
@@ -237,6 +264,24 @@ return (
                 </SelectContent>
               </Select>
             </div>
+
+            {/* Dropdown to choose an example */}
+          <div div className="mb-4">
+            <Label htmlFor="example">Choose an Example</Label>
+            <Select value={selectedExample} onValueChange={handleSelectExample}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select an example" />
+            </SelectTrigger>
+            <SelectContent>
+          {examples.map((example, index) => (
+            <SelectItem key={index} value={index.toString()}>
+              {`Example ${index + 1}: ${example.equation}`}
+            </SelectItem>
+          ))}
+            </SelectContent>
+            </Select>
+          </div>
+
             <Button
               onClick={calculateDifferentiation}
               className="bg-neutral-950 hover:bg-neutral-800"

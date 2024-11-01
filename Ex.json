@@ -4,6 +4,24 @@
       "equation": "x^3 - 5x + 1",
       "xL": -3,
       "xR": -1,
+      "tolerance": 0.0001,
+      "precision": 6,
+      "method": "Graphical"
+    },
+    {
+      "category": "root",
+      "equation": "x^2 - 4",
+      "xL": 0,
+      "xR": 3,
+      "tolerance": 1e-06,
+      "precision": 6,
+      "method": "Graphical"
+    },
+    {
+      "category": "root",
+      "equation": "x^3 - 5x + 1",
+      "xL": -3,
+      "xR": -1,
       "tolerance": 1e-06,
       "precision": 6,
       "method": "Bisection"
@@ -42,7 +60,7 @@
       "xR": 3,
       "tolerance": 1e-05,
       "precision": 5,
-      "method": "False Position"
+      "method": "FalsePosition"
     },
     {
       "category": "root",
@@ -51,7 +69,7 @@
       "xR": 2,
       "tolerance": 1e-05,
       "precision": 5,
-      "method": "False Position"
+      "method": "FalsePosition"
     },
     {
       "category": "root",
@@ -60,7 +78,7 @@
       "xR": 3,
       "tolerance": 1e-05,
       "precision": 5,
-      "method": "False Position"
+      "method": "FalsePosition"
     },
     {
       "category": "root",
@@ -69,7 +87,7 @@
       "xR": 2,
       "tolerance": 1e-05,
       "precision": 5,
-      "method": "False Position"
+      "method": "FalsePosition"
     },
     {
       "category": "root",
@@ -78,7 +96,7 @@
       "xR": 2,
       "tolerance": 1e-07,
       "precision": 7,
-      "method": "Newton-Raphson"
+      "method": "NewtonRaphson"
     },
     {
       "category": "root",
@@ -87,7 +105,7 @@
       "xR": 2,
       "tolerance": 1e-07,
       "precision": 7,
-      "method": "Newton-Raphson"
+      "method": "NewtonRaphson"
     },
     {
       "category": "root",
@@ -96,7 +114,7 @@
       "xR": 1,
       "tolerance": 1e-07,
       "precision": 7,
-      "method": "Newton-Raphson"
+      "method": "NewtonRaphson"
     },
     {
       "category": "root",
@@ -105,7 +123,7 @@
       "xR": 4,
       "tolerance": 1e-07,
       "precision": 7,
-      "method": "Newton-Raphson"
+      "method": "NewtonRaphson"
     },
     {
       "category": "root",
@@ -150,7 +168,7 @@
       "xR": 1,
       "tolerance": 1e-06,
       "precision": 6,
-      "method": "One Point Iteration"
+      "method": "OnePoint"
     },
     {
       "category": "root",
@@ -159,7 +177,7 @@
       "xR": 2,
       "tolerance": 1e-06,
       "precision": 6,
-      "method": "One Point Iteration"
+      "method": "OnePoint"
     },
     {
       "category": "root",
@@ -168,7 +186,7 @@
       "xR": 2,
       "tolerance": 1e-06,
       "precision": 6,
-      "method": "One Point Iteration"
+      "method": "OnePoint"
     },
     {
       "category": "root",
@@ -177,7 +195,7 @@
       "xR": 2,
       "tolerance": 1e-06,
       "precision": 6,
-      "method": "One Point Iteration"
+      "method": "OnePoint"
     },
     {
         "category": "linear",
@@ -329,13 +347,105 @@
         "precision": 6
     },
     {
-        "category": "linear",
-        "method": "ConjugateGradient",
-        "dimension": 4,
-        "matrix": [[5, 2, 0, 0], [2, 5, 2, 0], [0, 2, 5, 2], [0, 0, 2, 5]],
-        "solution": [12, 17, 14, 7],
-        "initialX": [0,0,0],
-        "tolerance": 0.000001,
-        "precision": 6
-    }  
+      "category": "interpol",
+      "method": "NewtonDivided",
+      "point": 5,
+      "x": [0,20000,40000,60000,80000],
+      "y": [9.81,9.7487,9.6879,9.6286,9.5682],
+      "atX": 42000
+    },
+    {
+      "category": "interpol",
+      "method": "NewtonDivided",
+      "point": 5,
+      "x": [2,4,6,8,10],
+      "y": [9.5,8.0,10.5,39.5,72.5],
+      "atX": 4.5
+    },
+    {
+      "category": "interpol",
+      "method": "Largrange",
+      "point": 5,
+      "x": [0,20000,40000,60000,80000],
+      "y": [9.81,9.7487,9.6879,9.6286,9.5682],
+      "atX": 42000
+    },
+    {
+      "category": "interpol",
+      "method": "Largrange",
+      "point": 5,
+      "x": [2,4,6,8,10],
+      "y": [9.5,8.0,10.5,39.5,72.5],
+      "atX": 4.5
+    },
+    {
+      "category": "interpol",
+      "method": "Spline",
+      "point": 5,
+      "x": [0,20000,40000,60000,80000],
+      "y": [9.81,9.7487,9.6879,9.6286,9.5682],
+      "atX": 42000
+    },
+    {
+      "category": "interpol",
+      "method": "Spline",
+      "point": 5,
+      "x": [2,4,6,8,10],
+      "y": [9.5,8.0,10.5,39.5,72.5],
+      "atX": 4.5
+    },
+    {
+      "category": "extrapol",
+      "method": "linearNPolyReg",
+      "point": 9,
+      "x": [10,15,20,30,40,50,60,70,80],
+      "y": [5,9,15,18,22,30,35,38,43],
+      "atX": 65,
+      "mOrder":2
+    },
+    {
+      "category": "extrapol",
+      "method": "multipleLinearReg",
+      "point": 7,
+      "x1": [1,0,2,3,4,2,1],
+      "x2": [0,1,4,2,1,3,6],
+      "x3": [1,3,1,2,5,3,4],
+      "y": [4,-5,-6,0,-1,-7,-20],
+      "k": 3,
+      "atX": 65,
+      "mOrder":2
+    },
+    {
+      "category": "integate",
+      "method": "Trapezoidal",
+      "equation": "4x^5-3x^4+x^3-6x+2",
+      "xL": 2,
+      "xR": 8,
+      "n": 6
+    },
+    {
+      "category": "integate",
+      "method": "Trapezoidal",
+      "equation": "x^2 + 3x + 1",
+      "xL": 2,
+      "xR": 5,
+      "n": 5
+    },
+    {
+      "category": "integate",
+      "method": "Simpson",
+      "equation": "sin(x)^5",
+      "xL": 2,
+      "xR": 8,
+      "n": 8
+    },
+    {
+      "category": "integate",
+      "method": "Simpson",
+      "equation": "x^3+8x+5",
+      "xL": 2,
+      "xR": 5,
+      "n": 4
+    }
+    
   ]

@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';  
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
-import Plot from 'react-plotly.js'; 
+import Plot from 'react-plotly.js';
+import axios from 'axios'; 
 import { evaluate } from 'mathjs';
 
 const TrapezoidalRule = () => {
@@ -17,6 +19,33 @@ const TrapezoidalRule = () => {
   const [formula, setFormula] = useState('');
   const [plotData, setPlotData] = useState([]);
   const [integralDisplay, setIntegralDisplay] = useState('');
+  const [examples, setExamples] = useState([]); // To store the list of examples
+  const [selectedExample, setSelectedExample] = useState('');
+  const [method, setMethod] = useState('trapezoidal');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/${method}`);
+        setExamples(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching examples:', error);
+      }
+    };
+
+    fetchData();
+  }, [method]);
+
+  const handleSelectExample = (value) => {
+    const selected = examples[value];
+    if (selected) {
+      setEquation(selected.equation);
+      setA(selected.xL);
+      setB(selected.xR);
+      setN(selected.n);
+    }
+  };
 
   const calculateIntegral = () => {
     const h = (b - a) / n;
@@ -140,6 +169,7 @@ const TrapezoidalRule = () => {
           mode: 'lines',
           line: { color: 'green', dash: 'dash' },
           name: `Linear f(x) ${i + 1}`,
+          showlegend: false,
         });
 
         linearFills.push({
@@ -232,6 +262,23 @@ const TrapezoidalRule = () => {
                 onChange={(e) => setN(parseInt(e.target.value))}
               />
             </div>
+
+            {/* Dropdown to choose an example */}
+          <div div className="mb-4">
+            <Label htmlFor="example">Choose an Example</Label>
+            <Select value={selectedExample} onValueChange={handleSelectExample}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select an example" />
+            </SelectTrigger>
+            <SelectContent>
+          {examples.map((example, index) => (
+            <SelectItem key={index} value={index.toString()}>
+              {`Example ${index + 1}: ${example.equation}`}
+            </SelectItem>
+          ))}
+            </SelectContent>
+            </Select>
+          </div>
             
             <Button
               onClick={calculateIntegral}
