@@ -20,8 +20,13 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:5000',
+        url: `https://numerical-method-backend.vercel.app/`, 
+        description: 'Vercel API server'
       },
+      {
+        url: `http://localhost:5000`,
+        description: 'Local server'
+      }
     ],
   },
   apis: ['./index.js'], // Path to the API docs

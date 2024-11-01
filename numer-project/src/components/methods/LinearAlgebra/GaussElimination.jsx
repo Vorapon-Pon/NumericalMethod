@@ -21,7 +21,7 @@ const GaussianElimination = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/${method}`);
+        const response = await axios.get(`https://numerical-method-backend.vercel.app/${method}`);
         setExamples(response.data);
       } catch (error) {
         console.error('Error fetching examples:', error);
