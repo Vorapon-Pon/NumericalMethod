@@ -7,9 +7,7 @@ const swaggerUi = require('swagger-ui-express');
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use("/", async (req, res) => {
-  res.send("Server is running");
-});
+
 
 //swagger
 const swaggerOptions = {
