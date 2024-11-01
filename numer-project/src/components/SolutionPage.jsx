@@ -17,7 +17,7 @@ import GaussJordan from './methods/LinearAlgebra/GaussJordan.jsx';
 import MatrixInversion from './methods/LinearAlgebra/MatrixInversion.jsx';
 import LUDecomposition from './methods/LinearAlgebra/LUDecomposition.jsx';
 import CholeskyDecomposition from './methods/LinearAlgebra/CholeskyDecomposition.jsx';
-import JacobiIteration from './methods/LinearAlgebra/Jacobiiteration.jsx';
+import JacobiIteration from './methods/LinearAlgebra/JacobiIteration.jsx';
 import GaussSeidel from './methods/LinearAlgebra/GaussSeidel.jsx';
 import ConjugateGradient from './methods/LinearAlgebra/ConjugateGradient.jsx';
 
