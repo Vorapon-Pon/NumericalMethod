@@ -1,19 +1,6 @@
 {
     "version": 2,
-    "builds": [
-      {
-        "src": "index.js",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/api/(.*)",
-        "dest": "index.js"
-      }
-    ],
-    "env": {
-      "MONGODB_URI": "mongodb+srv://voraponwpon:d52uQ9sC7TOzUtTw@cluster.r06og.mongodb.net/Example?retryWrites=true&w=majority"
-    }
-  }
+    "builds": [ { "src": "index.js", "use": "@vercel/node"}],
+    "routes": [ {"src": "/api/(.*)", "dest": "/"} ]
+}
   
